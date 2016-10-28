@@ -1,16 +1,18 @@
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io').listen(http);
+var server = require('http').Server(app);
+var io = require('socket.io').listen(server);
 
 //Server info
-var hostname = 'webrtctest.zapto.org';
-var port = 8080;
+var hostname = 'webrtctest2.zapto.org';
+var port = 80;
 
-var counter = 200;
+//var counter = 200;
 
 io.on('connection', function(socket){
-  socket.emit('counter', counter);
+  socket.on('counter', function(counter) {
+    console.log(counter);
+  });
 });
 
 app.use('/', express.static('public'));
@@ -20,6 +22,6 @@ app.set('view engine', 'jade');
 app.get('/', function(req, res){
     res.render('index'); //change <client page> to the client document
 });
-http.listen(port, hostname, function(){
+server.listen(port, hostname, function(){
     console.log('listening on *:' + port);
 });
